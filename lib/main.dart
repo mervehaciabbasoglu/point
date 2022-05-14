@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:point/pages/login_page.dart';
+//import 'package:point/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:point/pages/widgets/search_menu/search_page.dart';
 import 'package:point/services/authentication_service.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
             print('Hata Var! ${snapshot.error.toString()}');
             return const Text('Hata var!');
           } else if (snapshot.hasData) {
-            return const LoginPage();
+              return const SearchPage();
           } else {
             return const Center(
               child: CircularProgressIndicator(),
