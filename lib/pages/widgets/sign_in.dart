@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:point/theme.dart';
 import 'package:point/widgets/snackbar.dart';
+import 'package:provider/provider.dart';
+
+import '../../services/authentication_service.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -160,9 +163,14 @@ class _SignInState extends State<SignIn> {
                           fontFamily: 'WorkSansBold'),
                     ),
                   ),
-                  onPressed: () => CustomSnackBar(
-                      // TODO: Giriş Buradan Yaptırılacak
-                      context, const Text('Giriş Butonuna Basıldı')),
+                  onPressed: () => {
+                    CustomSnackBar(
+                        context, const Text('Giriş Butonuna Basıldı')),
+                    context.read<AuthenticationService>().signIn(
+                          email: loginEmailController.text.trim(),
+                          password: loginPasswordController.text.trim(),
+                        ),
+                  },
                 ),
               )
             ],

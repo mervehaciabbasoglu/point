@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:point/theme.dart';
 import 'package:point/widgets/snackbar.dart';
+import 'package:provider/provider.dart';
+
+import '../../services/authentication_service.dart';
+
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -256,6 +260,12 @@ class _SignUpState extends State<SignUp> {
 
   void _toggleSignUpButton() {
     CustomSnackBar(context, const Text('Kayıt ol Butonuna Tıklandı'));
+    if(signupPasswordController.text.trim() == signupConfirmPasswordController.text.trim()){
+      context.read<AuthenticationService>().signUp(
+        email: signupEmailController.text.trim(),
+        password: signupConfirmPasswordController.text.trim(),
+      );
+    }
   }
 
   void _toggleSignup() {
