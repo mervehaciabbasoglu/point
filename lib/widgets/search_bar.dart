@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
+
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchBar extends StatelessWidget {
   const SearchBar({
@@ -16,10 +17,14 @@ class SearchBar extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(29.5),
       ),
-      child: TextField(
+      child: const TextField(
         decoration: InputDecoration(
           hintText: "Search",
-          icon: SvgPicture.asset("assets/icons/search.svg"),
+          icon: Icon(
+            FontAwesomeIcons.search,
+            color: Colors.black,
+            size: 22.0,
+          ),
           border: InputBorder.none,
         ),
       ),

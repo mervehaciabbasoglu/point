@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:point/widgets/category_card.dart';
 import 'package:point/widgets/search_bar.dart';
 import 'package:point/services/database_service.dart';
@@ -18,21 +17,20 @@ class _SearchPage extends State<SearchPage> {
 
 
   @override
-  void initState() {
+  void initState() { // ilk yapılması gereken şeyler buraya yazılır.
     super.initState();
-    fetchCategories();
+    fetchCategories(); // burada kategorileri çektik. init state'e yazdık çünkü kullanıcı açar açmaz bunları görecek.
   }
 
   fetchCategories() async {
 
-    dynamic resultant = await Database().fetchCategories();
+    dynamic data = await Database().fetchCategories(); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
 
-    if (resultant == null) {
+    if (data == null) {
       print('Unable to retrieve');
     } else {
-      setState(() {
-        categoryList = resultant;
-
+      setState(() { // setState: gelen dataları widgetların kullanımına sunar
+        categoryList = data;
       });
     }
   }
@@ -46,7 +44,7 @@ class _SearchPage extends State<SearchPage> {
       var category = data();
       listCards.add(CategoryCard(
         title: category['name'],
-        svgSrc: "assets/img/world_cousin.jpg",
+        imgSrc: category["image"],
         press: () {
         },
       ));
@@ -83,7 +81,7 @@ class _SearchPage extends State<SearchPage> {
                         color: Color(0xFFF2BEA1),
                         shape: BoxShape.circle,
                       ),
-                      child: SvgPicture.asset("assets/icons/menu.png"),
+                      child: Image.asset("assets/icons/menu.png"),
                     ),
                   ),
                   Text(
