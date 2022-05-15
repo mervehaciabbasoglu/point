@@ -21,13 +21,14 @@ class Database {
     });
   }
 
-  Future fetchCategories() async {
-    cloud_firestore.CollectionReference categoryList  = _firestore.collection('categories');
+
+  Future fetchData(String collectionName) async {
+    cloud_firestore.CollectionReference dataList  = _firestore.collection(collectionName);
 
     List itemsList = [];
 
     try {
-      await categoryList.get().then((querySnapshot) {
+      await dataList.get().then((querySnapshot) {
         for (var element in querySnapshot.docs) {
           itemsList.add(element.data);
         }

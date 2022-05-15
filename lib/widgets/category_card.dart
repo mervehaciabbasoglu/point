@@ -34,14 +34,14 @@ class CategoryCard extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: (){
-                return press();
+                press();
               },
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: <Widget>[
                   const Spacer(),
-                  Image.asset(imgSrc),
+                  Image.network(imgSrc),
                   const Spacer(),
                   Text(
                     title,
@@ -50,7 +50,7 @@ class CategoryCard extends StatelessWidget {
                         .textTheme
                         .headline6
                         ?.copyWith(fontSize: 15),
-                  )
+                  ),
                 ],
               ),
             ),

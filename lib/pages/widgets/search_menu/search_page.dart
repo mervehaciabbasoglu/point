@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:point/widgets/category_card.dart';
-import 'package:point/widgets/search_bar.dart';
 import 'package:point/services/database_service.dart';
 
 
@@ -14,17 +14,24 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPage extends State<SearchPage> {
   List categoryList = [];
+  List restaurantList = [];
+
+  List<Widget> restaurantCards = [];
+  List<Widget> categoryCards = [];
+  TextEditingController searchController = TextEditingController();
+  int axisCount = 2;
 
 
   @override
   void initState() { // ilk yapılması gereken şeyler buraya yazılır.
     super.initState();
     fetchCategories(); // burada kategorileri çektik. init state'e yazdık çünkü kullanıcı açar açmaz bunları görecek.
+    fetchRestaurants();
   }
 
   fetchCategories() async {
 
-    dynamic data = await Database().fetchCategories(); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
+    dynamic data = await Database().fetchData('categories'); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
 
     if (data == null) {
       print('Unable to retrieve');
@@ -35,14 +42,29 @@ class _SearchPage extends State<SearchPage> {
     }
   }
 
+  fetchRestaurants() async {
+
+    dynamic data = await Database().fetchData('restaurants'); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
+
+    if (data == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() { // setState: gelen dataları widgetların kullanımına sunar
+        restaurantList = data;
+      });
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context)
         .size; //this gonna give us total height and with of our device
-    List<Widget> listCards = [];
+
     categoryList.forEach((data){
       var category = data();
-      listCards.add(CategoryCard(
+      categoryCards.add(CategoryCard(
         title: category['name'],
         imgSrc: category["image"],
         press: () {
@@ -50,6 +72,35 @@ class _SearchPage extends State<SearchPage> {
       ));
     });
 
+    _changedSearch(String value){
+      categoryCards = [];
+      restaurantCards = [];
+      if(value.isNotEmpty){
+        fetchRestaurants();
+        restaurantList.forEach((data){
+          var category = data();
+          restaurantCards.add(CategoryCard(
+            title: category['name'],
+            imgSrc: category["logo"],
+            press: () {
+            },
+          ));
+        });
+        axisCount = 1;
+      }else{
+        fetchCategories();
+        categoryList.forEach((data){
+          var category = data();
+          categoryCards.add(CategoryCard(
+            title: category['name'],
+            imgSrc: category["image"],
+            press: () {
+            },
+          ));
+        });
+        axisCount = 2;
+      }
+    }
 
     return Scaffold(
       body: Stack(
@@ -85,20 +136,41 @@ class _SearchPage extends State<SearchPage> {
                     ),
                   ),
                   Text(
-                    "RESTORANLAR",
+                    (axisCount == 2) ? "KATEGORİLER" : "RESTORANLAR"
+                    ,
                     style: Theme.of(context)
                         .textTheme
                         .headline4
                         ?.copyWith(fontWeight: FontWeight.w900),
                   ),
-                  const SearchBar(),
-                  Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(29.5),
+                    ),
+                    child: TextField(
+                      controller: searchController,
+                      decoration: const InputDecoration(
+                        hintText: "Search",
+                        icon: Icon(
+                          FontAwesomeIcons.search,
+                          color: Colors.black,
+                          size: 22.0,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      onChanged: (String value) async {
+                        _changedSearch(value);
+                      },
+                    ),
+                  ), Expanded(child: GridView.count(
+                      crossAxisCount: axisCount,
                       childAspectRatio: .85,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
-                      children: <Widget> [...listCards],
+                      children:  (axisCount == 2) ? <Widget> [...categoryCards] : <Widget> [...restaurantCards],
                     ),
                   ),
                 ],
@@ -110,9 +182,6 @@ class _SearchPage extends State<SearchPage> {
     );
   }
 }
-
-
-
 
 
 
