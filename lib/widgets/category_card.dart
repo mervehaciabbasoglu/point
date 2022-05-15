@@ -4,7 +4,7 @@ import '../constants.dart';
 class CategoryCard extends StatelessWidget {
   final String imgSrc;
   final String title;
-  final Function press;
+  final VoidCallback  press;
   const CategoryCard({
     Key? key,
     required this.imgSrc,
@@ -33,9 +33,7 @@ class CategoryCard extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: (){
-                press();
-              },
+            onTap: press,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(

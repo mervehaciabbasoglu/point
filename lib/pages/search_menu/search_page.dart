@@ -33,7 +33,7 @@ class _SearchPage extends State<SearchPage> {
 
   fetchCategories() async {
 
-    dynamic data = await Database().fetchData('categories'); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
+    dynamic data = await Database().fetchCategories(); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
 
     if (data == null) {
       print('Unable to retrieve');
@@ -44,9 +44,8 @@ class _SearchPage extends State<SearchPage> {
     }
   }
 
-  fetchRestaurants() async {
-
-    dynamic data = await Database().fetchData('restaurants'); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
+  fetchRestaurants({String? category}) async {
+    dynamic data = await Database().fetchRestaurants(category:category); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
 
     if (data == null) {
       print('Unable to retrieve');
@@ -69,12 +68,14 @@ class _SearchPage extends State<SearchPage> {
     var size = MediaQuery.of(context)
         .size; //this gonna give us total height and with of our device
 
-    categoryList.forEach((data){
-      var category = data();
+    categoryList.forEach((category){
       categoryCards.add(CategoryCard(
-        title: category['name'],
-        imgSrc: category["image"],
+        title: category['data']['name'],
+        imgSrc: category['data']['image'],
         press: () {
+          fetchRestaurants(category:category['id']);
+          searchController.text = category['data']['name'];
+          axisCount = 1;
         },
       ));
     });
@@ -96,12 +97,14 @@ class _SearchPage extends State<SearchPage> {
         axisCount = 1;
       }else{
         fetchCategories();
-        categoryList.forEach((data){
-          var category = data();
+        categoryList.forEach((category){
           categoryCards.add(CategoryCard(
-            title: category['name'],
-            imgSrc: category["image"],
+            title: category['data']['name'],
+            imgSrc: category['data']['image'],
             press: () {
+              fetchRestaurants(category:category['id']);
+              searchController.text = category['data']['name'];
+              axisCount = 1;
             },
           ));
         });

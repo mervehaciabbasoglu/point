@@ -22,8 +22,13 @@ class Database {
   }
 
 
-  Future fetchData(String collectionName) async {
-    cloud_firestore.CollectionReference dataList  = _firestore.collection(collectionName);
+  Future fetchRestaurants({String? category}) async {
+    print("category");
+    print(category);
+    cloud_firestore.CollectionReference dataList  = _firestore.collection("restaurants");
+    if(category != null){
+      dataList.where("category", isNotEqualTo:category);
+    }
 
     List itemsList = [];
 
@@ -31,6 +36,24 @@ class Database {
       await dataList.get().then((querySnapshot) {
         for (var element in querySnapshot.docs) {
           itemsList.add(element.data);
+        }
+      });
+      return itemsList;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future fetchCategories() async {
+    cloud_firestore.CollectionReference dataList  = _firestore.collection("categories");
+
+    List itemsList = [];
+
+    try {
+      await dataList.get().then((querySnapshot) {
+        for (var element in querySnapshot.docs) {
+          itemsList.add({"data":element.data(),"id":element.reference.id});
         }
       });
 
