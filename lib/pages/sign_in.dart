@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:point/pages/search_menu/search_page.dart';
 import 'package:point/theme.dart';
 import 'package:point/widgets/snackbar.dart';
 import 'package:provider/provider.dart';
-
-import '../../services/authentication_service.dart';
+import '../services/authentication_service.dart';
+import '../widgets/dialog.dart';
+import '../widgets/error_dialog.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -27,6 +30,48 @@ class _SignInState extends State<SignIn> {
     focusNodeEmail.dispose();
     focusNodePassword.dispose();
     super.dispose();
+  }
+  login() async
+  {
+    showDialog(
+        context: context,
+        builder: (c)
+        {
+          return const LoadingDialog(
+            message: "Bilgileri Kontrol Edin ",
+          );
+        }
+    );
+
+    print("test");
+
+    User? currentUser;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    await _auth.signInWithEmailAndPassword(
+      email: loginEmailController.text.trim(),
+      password: loginPasswordController.text.trim(),
+    ).then((auth){
+      currentUser = auth.user!;
+    }).catchError((error){
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (c)
+          {
+            return ErrorDialog(
+              message: error.message.toString(),
+            );
+          }
+      );
+    }).whenComplete(() {
+      print("test");
+      if (currentUser != null){
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> const SearchPage()));
+      }
+
+    }
+    );
   }
 
   @override
@@ -166,10 +211,7 @@ class _SignInState extends State<SignIn> {
                   onPressed: () => {
                     CustomSnackBar(
                         context, const Text('Giriş Butonuna Basıldı')),
-                    context.read<AuthenticationService>().signIn(
-                          email: loginEmailController.text.trim(),
-                          password: loginPasswordController.text.trim(),
-                        ),
+                        login(),
                   },
                 ),
               )

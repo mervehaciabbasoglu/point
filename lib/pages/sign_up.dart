@@ -4,7 +4,7 @@ import 'package:point/theme.dart';
 import 'package:point/widgets/snackbar.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/authentication_service.dart';
+import '../services/authentication_service.dart';
 
 
 class SignUp extends StatefulWidget {

@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:point/pages/login_page.dart';
 import 'package:point/widgets/category_card.dart';
 import 'package:point/services/database_service.dart';
 
@@ -55,7 +57,12 @@ class _SearchPage extends State<SearchPage> {
     }
   }
 
-
+  logout() {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    _auth.signOut();
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (c)=> const LoginPage()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,8 +139,13 @@ class _SearchPage extends State<SearchPage> {
                         color: Color(0xFFF2BEA1),
                         shape: BoxShape.circle,
                       ),
-                      child: Image.asset("assets/icons/menu.png"),
+                      child: TextButton(
+                        onPressed: () { logout(); },
+                        child: Image.asset("assets/icons/menu.png"),
+
+                      ),
                     ),
+
                   ),
                   Text(
                     (axisCount == 2) ? "KATEGORİLER" : "RESTORANLAR"
