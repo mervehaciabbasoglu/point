@@ -75,15 +75,18 @@ class _SearchPage extends State<SearchPage> {
         press: () {
           fetchRestaurants(category:category['id']);
           searchController.text = category['data']['name'];
+          searchController.value = category['data']['name'];
           axisCount = 1;
         },
       ));
     });
 
     _changedSearch(String value){
+      print(value);
       categoryCards = [];
       restaurantCards = [];
       if(value.isNotEmpty){
+        axisCount = 1;
         fetchRestaurants();
         restaurantList.forEach((data){
           var category = data();
@@ -94,22 +97,23 @@ class _SearchPage extends State<SearchPage> {
             },
           ));
         });
-        axisCount = 1;
       }else{
+        axisCount = 2;
         fetchCategories();
         categoryList.forEach((category){
           categoryCards.add(CategoryCard(
             title: category['data']['name'],
             imgSrc: category['data']['image'],
             press: () {
+              axisCount = 1;
               fetchRestaurants(category:category['id']);
               searchController.text = category['data']['name'];
-              axisCount = 1;
+              searchController.value = category['data']['name'];
             },
           ));
         });
-        axisCount = 2;
       }
+      print(axisCount);
     }
 
     return Scaffold(

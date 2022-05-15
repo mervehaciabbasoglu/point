@@ -26,9 +26,9 @@ class Database {
     print("category");
     print(category);
     cloud_firestore.CollectionReference dataList  = _firestore.collection("restaurants");
-    if(category != null){
-      dataList.where("category", isNotEqualTo:category);
-    }
+    // if(category != null){
+    //   dataList.where("category", isNotEqualTo:category);
+    // }
 
     List itemsList = [];
 
