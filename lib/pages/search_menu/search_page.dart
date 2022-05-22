@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:point/pages/login_page.dart';
+import 'package:point/pages/search_menu/drawer.dart';
 import 'package:point/widgets/category_card.dart';
 import 'package:point/services/database_service.dart';
 
@@ -15,6 +16,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPage extends State<SearchPage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   List categoryList = [];
   List restaurantList = [];
 
@@ -63,8 +65,16 @@ class _SearchPage extends State<SearchPage> {
     Navigator.push(context, MaterialPageRoute(builder: (c)=> const LoginPage()));
   }
 
+  openSidebar() {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    _auth.signOut();
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (c)=> const LoginPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
+    final _name = Scaffold();
     var size = MediaQuery.of(context)
         .size; //this gonna give us total height and with of our device
 
@@ -117,11 +127,12 @@ class _SearchPage extends State<SearchPage> {
     }
 
     return Scaffold(
+      drawer: NavBar(),
       body: Stack(
         children: <Widget>[
           Container(
             // Here the height of the container is 45% of our total height
-            height: size.height * .45,
+            height: size.height * .30,
             decoration: const BoxDecoration(
               color: Color(0xFFF5CEB8),
               image: DecorationImage(
@@ -147,8 +158,15 @@ class _SearchPage extends State<SearchPage> {
                         shape: BoxShape.circle,
                       ),
                       child: TextButton(
-                        onPressed: () { logout(); },
-                        child: Image.asset("assets/icons/menu.png"),
+                        // TODO: burası
+                        onPressed: (){
+                          if(Scaffold.of(context).isDrawerOpen){
+                            Scaffold.of(context).openEndDrawer();
+                          }else{
+                            Scaffold.of(context).openDrawer();
+                          }
+                        },
+                        child: Image.network("https://img.icons8.com/material-outlined/24/000000/menu--v3.png"),
 
                       ),
                     ),

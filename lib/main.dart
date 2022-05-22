@@ -7,6 +7,7 @@ import 'package:point/pages/search_menu/search_page.dart';
 import 'package:point/services/authentication_service.dart';
 import 'package:provider/provider.dart';
 
+// firebase kurulumu ve ana sayfaya girişini  sağlamak
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,5 +60,18 @@ class MyApp extends StatelessWidget {
       ),
     ),
     );
+  }
+}
+class Search_Menu extends StatefulWidget {
+  const Search_Menu({Key? key}) : super(key: key);
+
+  @override
+  State<Search_Menu> createState() => _Search_MenuState();
+}
+
+class _Search_MenuState extends State<Search_Menu> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

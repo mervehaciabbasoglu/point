@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// renkler ana sayfa ve giriş için
+
 const kBackgroundColor = Color(0xFFF8F8F8);
 const kActiveIconColor = Color(0xFFE68342);
 const kTextColor = Color(0xFF222B45);

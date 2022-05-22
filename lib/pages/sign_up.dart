@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:point/theme.dart';
 import 'package:point/widgets/snackbar.dart';
@@ -197,9 +198,9 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                           ),
-                          onSubmitted: (_) {
+                         onSubmitted: (_) {
                             _toggleSignUpButton();
-                          },
+                         },
                           textInputAction: TextInputAction.go,
                         ),
                       ),
