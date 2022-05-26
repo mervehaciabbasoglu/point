@@ -56,11 +56,11 @@ class _LoginPageState extends State<LoginPage>
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 75.0),
+             Padding(
+                padding: const EdgeInsets.only(top: 65.0),
                 child: Image(
                     height:
-                        MediaQuery.of(context).size.height > 800 ? 191.0 : 75,
+                        MediaQuery.of(context).size.height > 600 ? 210.0 : 75,
                     fit: BoxFit.fill,
                     image: const AssetImage('assets/img/login_logo.png')),
               ),
@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage>
       height: 50.0,
       decoration: const BoxDecoration(
         color: Color(0x552B2B2B),
-        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+        borderRadius: BorderRadius.all(Radius.circular(35.0)),
       ),
       child: CustomPaint(
         painter: BubbleIndicatorPainter(pageController: _pageController),
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage>
                   'Giriş Yap',
                   style: TextStyle(
                       color: left,
-                      fontSize: 16.0,
+                      fontSize: 19.0,
                       fontFamily: 'WorkSansSemiBold'),
                 ),
               ),
@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage>
                   'Kayıt Ol',
                   style: TextStyle(
                       color: right,
-                      fontSize: 16.0,
+                      fontSize: 19.0,
                       fontFamily: 'WorkSansSemiBold'),
                 ),
               ),

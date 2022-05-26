@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class NavBar extends StatefulWidget {
   const NavBar({Key? key}) : super(key: key);
 
@@ -28,7 +29,7 @@ class _NavBarState extends State<NavBar> {
               ),
             ),
             decoration: const BoxDecoration(
-              color: Colors.blue,
+              color: Colors.purpleAccent,
               image: DecorationImage(
                 image: NetworkImage(
                   'https://www.pexels.com/tr-tr/fotograf/gradyan-cok-renkli-gradyan-arka-plani-renk-gecisi-7130555/'
@@ -72,3 +73,6 @@ class _NavBarState extends State<NavBar> {
     );
   }
 }
+
+
+

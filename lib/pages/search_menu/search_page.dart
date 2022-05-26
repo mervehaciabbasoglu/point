@@ -8,6 +8,7 @@ import 'package:point/widgets/category_card.dart';
 import 'package:point/services/database_service.dart';
 
 
+
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -64,6 +65,7 @@ class _SearchPage extends State<SearchPage> {
     Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (c)=> const LoginPage()));
   }
+
 
   openSidebar() {
     final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -151,27 +153,26 @@ class _SearchPage extends State<SearchPage> {
                     alignment: Alignment.topRight,
                     child: Container(
                       alignment: Alignment.center,
-                      height: 52,
-                      width: 52,
+                      height: 77,
+                      width: 45,
                       decoration: const BoxDecoration(
                         color: Color(0xFFF2BEA1),
                         shape: BoxShape.circle,
                       ),
-                      child: TextButton(
+
+                        child: TextButton(
                         // TODO: burası
                         onPressed: (){
-                          if(Scaffold.of(context).isDrawerOpen){
-                            Scaffold.of(context).openEndDrawer();
-                          }else{
-                            Scaffold.of(context).openDrawer();
-                          }
+                          logout();
                         },
-                        child: Image.network("https://img.icons8.com/material-outlined/24/000000/menu--v3.png"),
+                       child: Image.network("https://cdn.icon-icons.com/icons2/2943/PNG/512/logout_icon_184025.png")
 
                       ),
+
                     ),
 
                   ),
+
                   Text(
                     (axisCount == 2) ? "KATEGORİLER" : "RESTORANLAR"
                     ,
@@ -182,7 +183,7 @@ class _SearchPage extends State<SearchPage> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 30),
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(29.5),
@@ -194,7 +195,7 @@ class _SearchPage extends State<SearchPage> {
                         icon: Icon(
                           FontAwesomeIcons.search,
                           color: Colors.black,
-                          size: 22.0,
+                          size: 25.0,
                         ),
                         border: InputBorder.none,
                       ),
@@ -219,6 +220,7 @@ class _SearchPage extends State<SearchPage> {
     );
   }
 }
+
 
 
 
