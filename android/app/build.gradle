@@ -58,5 +58,4 @@ flutter {
 
 dependencies {
     implentation  'com.android.support:support-annotations:28.0.0'
-
 }

@@ -5,8 +5,6 @@ import 'package:point/main.dart';
 import 'package:point/pages/search_menu/search_page.dart';
 import 'package:point/theme.dart';
 import 'package:point/widgets/snackbar.dart';
-import 'package:provider/provider.dart';
-import '../services/authentication_service.dart';
 import '../widgets/dialog.dart';
 import '../widgets/error_dialog.dart';
 import 'forgot_password_page.dart';
