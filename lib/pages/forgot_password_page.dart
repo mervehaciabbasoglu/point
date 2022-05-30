@@ -27,7 +27,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   }
   Widget build(BuildContext) => Scaffold(
     appBar: AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.blue,
       elevation: 0,
       title: Text('Şifreyi Yenile'),
     ),
@@ -51,7 +51,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               decoration: InputDecoration(labelText: 'Email'),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (email) =>
-              email != null && !EmailValidator.validate(email) 
+              email != null && !EmailValidator.validate(email)
                   ? 'Geçerli bir eposta adresi giriniz'
                   : null,
             ),
@@ -75,9 +75,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   Future verifyEmail() async {
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => Center(child: CircularProgressIndicator()),
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(child: CircularProgressIndicator()),
     );
 
     try {
@@ -94,12 +94,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       Navigator.of(context).pop();
     }
   }
-  }
+}
 
 
 
 
- /* Widget build(BuildContext context) {
+ /*Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -114,11 +114,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
-         /* gradient: linearGradient(colors: [
+          gradient: linearGradient(colors: [
             hexStringToColor("CB2093"),
             hexStringToColor("9546C4"),
             hexStringToColor("9546C4"),
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter),*/
+          ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
           child: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
@@ -144,5 +144,4 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ),
       ),
     );*/
-
 

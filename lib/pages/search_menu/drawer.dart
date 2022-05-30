@@ -16,12 +16,12 @@ class _NavBarState extends State<NavBar> {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-              accountName: const Text('PROFİLİM'),
-              accountEmail: const Text('example@gmailcom'),
+            accountName: const Text('PROFİLİM'),
+            accountEmail: const Text('example@gmailcom'),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
-                    'https://www.istockphoto.com/tr/vekt%C3%B6r/woman-front-face-cartoon-avatar-icon-gm613880840-106063081',
+                  'https://www.istockphoto.com/tr/vekt%C3%B6r/woman-front-face-cartoon-avatar-icon-gm613880840-106063081',
                   width: 90,
                   height: 90,
                   fit: BoxFit.cover,
@@ -32,7 +32,7 @@ class _NavBarState extends State<NavBar> {
               color: Colors.purpleAccent,
               image: DecorationImage(
                 image: NetworkImage(
-                  'https://www.pexels.com/tr-tr/fotograf/gradyan-cok-renkli-gradyan-arka-plani-renk-gecisi-7130555/'
+                    'https://www.pexels.com/tr-tr/fotograf/gradyan-cok-renkli-gradyan-arka-plani-renk-gecisi-7130555/'
                 ),
                 fit: BoxFit.cover,
               ),
@@ -55,7 +55,7 @@ class _NavBarState extends State<NavBar> {
           ),
           ListTile(
             leading: Icon(Icons.navigation),
-            title: Text('kayıtlı Konumlarım'),
+            title: Text('Adreslerim'),
             onTap: () => null,
           ),
           ListTile(
@@ -73,6 +73,5 @@ class _NavBarState extends State<NavBar> {
     );
   }
 }
-
 
 

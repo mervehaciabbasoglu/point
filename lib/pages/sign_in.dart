@@ -209,7 +209,7 @@ class _SignInState extends State<SignIn> {
                   splashColor: CustomTheme.loginGradientEnd,
                   child: const Padding(
                     padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 35.0),
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 35.0),
                     child: Text(
                       'Giriş Yap',
                       style: TextStyle(
@@ -221,7 +221,7 @@ class _SignInState extends State<SignIn> {
                   onPressed: () => {
                     CustomSnackBar(
                         context, const Text('Giriş Butonuna Basıldı')),
-                        login(),
+                    login(),
                   },
                 ),
               )
@@ -231,15 +231,15 @@ class _SignInState extends State<SignIn> {
             padding: const EdgeInsets.only(top: 10.0),
             child: TextButton(
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgotPasswordPage())
-                ),
-                child: const Text(
-                  'Şifremi Unuttum',
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontFamily: 'WorkSansMedium'),
-                ),
+              ),
+              child: const Text(
+                'Şifremi Unuttum',
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontFamily: 'WorkSansMedium'),
+              ),
             ),
           ),
           Padding(
@@ -262,7 +262,7 @@ class _SignInState extends State<SignIn> {
                   width: 50.0,
                   height: 1.0,
                 ),
-                const Padding(
+              /*  const Padding(
                   padding: EdgeInsets.only(left: 15.0, right:15.0),
                   child: Text(
                     'Veya',
@@ -271,7 +271,7 @@ class _SignInState extends State<SignIn> {
                         fontSize: 18.0,
                         fontFamily: 'WorkSansMedium'),
                   ),
-                ),
+                ),*/
                 Container(
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
@@ -293,7 +293,7 @@ class _SignInState extends State<SignIn> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-             /* Padding(
+              /* Padding(
                 padding: const EdgeInsets.only(top: 10.0, right: 40.0),
                 child: GestureDetector(
                   onTap: () => CustomSnackBar(
@@ -311,7 +311,7 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
               ),*/
-              Padding(
+           /*   Padding(
                 padding: const EdgeInsets.only(top: 30.0),
                 child: GestureDetector(
                   onTap: () => CustomSnackBar(
@@ -328,7 +328,7 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
         ],
@@ -346,5 +346,4 @@ class _SignInState extends State<SignIn> {
     });
   }
 }
-
 
