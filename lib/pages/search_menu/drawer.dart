@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
@@ -9,6 +10,11 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late User? user = _auth.currentUser;
+  late String? email = _auth.currentUser?.email;
+
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -17,7 +23,7 @@ class _NavBarState extends State<NavBar> {
         children: [
           UserAccountsDrawerHeader(
             accountName: const Text('PROFİLİM'),
-            accountEmail: const Text('example@gmailcom'),
+            accountEmail: Text(email.toString()),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
@@ -40,32 +46,32 @@ class _NavBarState extends State<NavBar> {
           ),
           ListTile(
             leading: const Icon(Icons.favorite),
-            title: Text('Favori mekanlarım'),
+            title: const Text('Favori mekanlarım'),
             onTap: () => null,
           ),
           ListTile(
-            leading: Icon(Icons.favorite),
+            leading: const Icon(Icons.favorite),
             title: const Text('Gitmek İstediğim Mekanlar'),
             onTap: () => null,
           ),
           ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text('Önceden Gittiklerim'),
+            leading: const Icon(Icons.favorite),
+            title: const Text('Önceden Gittiklerim'),
             onTap: () => null,
           ),
           ListTile(
-            leading: Icon(Icons.navigation),
-            title: Text('Adreslerim'),
+            leading: const Icon(Icons.navigation),
+            title: const Text('Adreslerim'),
             onTap: () => null,
           ),
           ListTile(
-            leading: Icon(Icons.help),
-            title: Text('Yardım'),
+            leading: const Icon(Icons.help),
+            title: const Text('Yardım'),
             onTap: () => null,
           ),
           ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Çıkış'),
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Çıkış'),
             onTap: () => null,
           ),
         ],
