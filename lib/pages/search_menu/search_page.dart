@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:point/pages/login_page.dart';
 import 'package:point/pages/search_menu/drawer.dart';
 import 'package:point/widgets/category_card.dart';
 import 'package:point/services/database_service.dart';
+
+
+
 
 
 class SearchPage extends StatefulWidget {
@@ -16,7 +18,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPage extends State<SearchPage> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List categoryList = [];
   List restaurantList = [];
 
@@ -65,12 +67,17 @@ class _SearchPage extends State<SearchPage> {
     Navigator.push(context, MaterialPageRoute(builder: (c)=> const LoginPage()));
   }
 
-  openSidebar() {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    _auth.signOut();
-    Navigator.pop(context);
-    Navigator.push(context, MaterialPageRoute(builder: (c)=> const LoginPage()));
+
+  toggleDrawer() async {
+    if (_scaffoldKey.currentState!.isDrawerOpen) {
+      _scaffoldKey.currentState!.openEndDrawer();
+    } else {
+      _scaffoldKey.currentState!.openDrawer();
+    }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +98,8 @@ class _SearchPage extends State<SearchPage> {
       ));
     });
 
+
     _changedSearch(String value){
-      print(value);
       categoryCards = [];
       restaurantCards = [];
       if(value.isNotEmpty){
@@ -127,9 +134,11 @@ class _SearchPage extends State<SearchPage> {
     }
 
     return Scaffold(
-      drawer: NavBar(),
+      key: _scaffoldKey,
+      drawer: const NavBar(),
       body: Stack(
         children: <Widget>[
+
           Container(
             // Here the height of the container is 45% of our total height
             height: size.height * .30,
@@ -147,31 +156,65 @@ class _SearchPage extends State<SearchPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 52,
-                      width: 52,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF2BEA1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: TextButton(
-                        // TODO: burası
-                        onPressed: (){
-                          if(Scaffold.of(context).isDrawerOpen){
-                            Scaffold.of(context).openEndDrawer();
-                          }else{
-                            Scaffold.of(context).openDrawer();
-                          }
-                        },
-                        child: Image.network("https://img.icons8.com/material-outlined/24/000000/menu--v3.png"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 77,
+                          width: 45,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF2BEA1),
+                            shape: BoxShape.circle,
+                          ),
+
+                          child: TextButton(
+                              onPressed: (){
+                                toggleDrawer();
+                              },
+                              child: Image.network("https://img.icons8.com/material-outlined/24/000000/menu--v4.png")
+
+                          ),
+
+                        ),
 
                       ),
-                    ),
+                      Text(
+                        "Merve'nin Malikanesi"
+                        ,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(fontWeight: FontWeight.w900,
+                            color: Colors.pink
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 77,
+                          width: 45,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF2BEA1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: TextButton(
+                              onPressed: (){
+                                logout();
+                              },
+                              child: Image.network("https://cdn.icon-icons.com/icons2/2943/PNG/512/logout_icon_184025.png")
 
+                          ),
+
+                        ),
+
+                      ),
+                    ],
                   ),
+
                   Text(
                     (axisCount == 2) ? "KATEGORİLER" : "RESTORANLAR"
                     ,
@@ -182,7 +225,7 @@ class _SearchPage extends State<SearchPage> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 30),
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(29.5),
@@ -194,7 +237,7 @@ class _SearchPage extends State<SearchPage> {
                         icon: Icon(
                           FontAwesomeIcons.search,
                           color: Colors.black,
-                          size: 22.0,
+                          size: 25.0,
                         ),
                         border: InputBorder.none,
                       ),
@@ -203,12 +246,12 @@ class _SearchPage extends State<SearchPage> {
                       },
                     ),
                   ), Expanded(child: GridView.count(
-                      crossAxisCount: axisCount,
-                      childAspectRatio: .85,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      children:  (axisCount == 2) ? <Widget> [...categoryCards] : <Widget> [...restaurantCards],
-                    ),
+                    crossAxisCount: axisCount,
+                    childAspectRatio: .85,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    children:  (axisCount == 2) ? <Widget> [...categoryCards] : <Widget> [...restaurantCards],
+                  ),
                   ),
                 ],
               ),

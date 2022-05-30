@@ -1,13 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:point/main.dart';
 import 'package:point/pages/search_menu/search_page.dart';
 import 'package:point/theme.dart';
 import 'package:point/widgets/snackbar.dart';
-import 'package:provider/provider.dart';
-import '../services/authentication_service.dart';
 import '../widgets/dialog.dart';
 import '../widgets/error_dialog.dart';
+import 'forgot_password_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(MyApp());
+}
+
+
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -96,7 +106,7 @@ class _SignInState extends State<SignIn> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                            top: 10.0, bottom: 20.0, left: 25.0, right: 25.0),
                         child: TextField(
                           focusNode: focusNodeEmail,
                           controller: loginEmailController,
@@ -199,19 +209,19 @@ class _SignInState extends State<SignIn> {
                   splashColor: CustomTheme.loginGradientEnd,
                   child: const Padding(
                     padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 35.0),
                     child: Text(
                       'Giriş Yap',
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 25.0,
+                          fontSize: 30.0,
                           fontFamily: 'WorkSansBold'),
                     ),
                   ),
                   onPressed: () => {
                     CustomSnackBar(
                         context, const Text('Giriş Butonuna Basıldı')),
-                        login(),
+                    login(),
                   },
                 ),
               )
@@ -220,15 +230,17 @@ class _SignInState extends State<SignIn> {
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Şifremi Unuttum',
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontFamily: 'WorkSansMedium'),
-                )),
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgotPasswordPage())
+              ),
+              child: const Text(
+                'Şifremi Unuttum',
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontFamily: 'WorkSansMedium'),
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
@@ -247,19 +259,19 @@ class _SignInState extends State<SignIn> {
                         stops: <double>[0.0, 1.0],
                         tileMode: TileMode.clamp),
                   ),
-                  width: 100.0,
+                  width: 50.0,
                   height: 1.0,
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
+              /*  const Padding(
+                  padding: EdgeInsets.only(left: 15.0, right:15.0),
                   child: Text(
                     'Veya',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16.0,
+                        fontSize: 18.0,
                         fontFamily: 'WorkSansMedium'),
                   ),
-                ),
+                ),*/
                 Container(
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
@@ -272,7 +284,7 @@ class _SignInState extends State<SignIn> {
                         stops: <double>[0.0, 1.0],
                         tileMode: TileMode.clamp),
                   ),
-                  width: 100.0,
+                  width: 50.0,
                   height: 1.0,
                 ),
               ],
@@ -281,7 +293,7 @@ class _SignInState extends State<SignIn> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
+              /* Padding(
                 padding: const EdgeInsets.only(top: 10.0, right: 40.0),
                 child: GestureDetector(
                   onTap: () => CustomSnackBar(
@@ -298,12 +310,12 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+              ),*/
+           /*   Padding(
+                padding: const EdgeInsets.only(top: 30.0),
                 child: GestureDetector(
                   onTap: () => CustomSnackBar(
-                      context, const Text('Google button pressed')),
+                      context, const Text('Google butonuna tıklandı')),
                   child: Container(
                     padding: const EdgeInsets.all(15.0),
                     decoration: const BoxDecoration(
@@ -316,7 +328,7 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
         ],
@@ -325,7 +337,7 @@ class _SignInState extends State<SignIn> {
   }
 
   void _toggleSignInButton() {
-    CustomSnackBar(context, const Text('Login button pressed'));
+    CustomSnackBar(context, const Text('Giriş butonuna tıklandı'));
   }
 
   void _toggleLogin() {
@@ -334,3 +346,4 @@ class _SignInState extends State<SignIn> {
     });
   }
 }
+
