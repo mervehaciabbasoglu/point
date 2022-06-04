@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart' as cloud_firestore;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Database {
   final cloud_firestore.FirebaseFirestore _firestore = cloud_firestore.FirebaseFirestore.instance;
@@ -22,27 +23,51 @@ class Database {
   }
 
 
-  Future fetchRestaurants({String? category}) async {
-    print("category");
+  Future fetchRestaurants({String? category, String? restaurant}) async {
     print(category);
-    cloud_firestore.CollectionReference dataList  = _firestore.collection("restaurants");
-    // if(category != null){
-    //   dataList.where("category", isNotEqualTo:category);
-    // }
+    print(restaurant);
 
-    List itemsList = [];
-
-    try {
-      await dataList.get().then((querySnapshot) {
-        for (var element in querySnapshot.docs) {
-          itemsList.add(element.data);
-        }
-      });
-      return itemsList;
-    } catch (e) {
-      print(e.toString());
-      return null;
+    Future<Object> searchByRestaurantName(String? searchField) async {
+      List itemsList = [];
+      try {
+        await _firestore.collection('restaurants')
+            .where('name', isEqualTo: searchField)
+            .get().then((querySnapshot) {
+          for (var element in querySnapshot.docs) {
+            itemsList.add(element.data);
+          }
+        });
+        return itemsList;
+      } catch (e) {
+        print(e.toString());
+        return [];
+      }
     }
+    Future<Object> searchByCategoryReference(String? searchField) async {
+      List itemsList = [];
+      try {
+        print("**************");
+        print(searchField);
+        await _firestore.collection('restaurants').orderBy("category").startAt([searchField])
+            .get().then((querySnapshot) {
+          for (var element in querySnapshot.docs) {
+            itemsList.add(element.data());
+          }
+        });
+        print("*000000000000000000000000000000000000000000000000000");
+        print(itemsList.length);
+        return itemsList;
+      } catch (e) {
+        print(e.toString());
+        return [];
+      }
+    }
+
+    if(category != null){
+      return await searchByCategoryReference(category);
+    }
+    return await searchByRestaurantName(restaurant);
+
   }
 
   Future fetchCategories() async {
@@ -50,6 +75,24 @@ class Database {
 
     List itemsList = [];
 
+    try {
+      await dataList.get().then((querySnapshot) {
+        for (var element in querySnapshot.docs) {
+          itemsList.add({"data":element.data(),"id":element.reference.id});
+        }
+      });
+
+      return itemsList;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future fetchAddresses() async {
+    cloud_firestore.CollectionReference dataList  = _firestore.collection("addresses");
+
+    List itemsList = [];
     try {
       await dataList.get().then((querySnapshot) {
         for (var element in querySnapshot.docs) {

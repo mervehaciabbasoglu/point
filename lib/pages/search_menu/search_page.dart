@@ -8,8 +8,6 @@ import 'package:point/services/database_service.dart';
 
 
 
-
-
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -48,8 +46,8 @@ class _SearchPage extends State<SearchPage> {
     }
   }
 
-  fetchRestaurants({String? category}) async {
-    dynamic data = await Database().fetchRestaurants(category:category); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
+  fetchRestaurants({String? category, String? restaurant}) async {
+    dynamic data = await Database().fetchRestaurants(category:category, restaurant:restaurant); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
 
     if (data == null) {
       print('Unable to retrieve');
@@ -90,23 +88,26 @@ class _SearchPage extends State<SearchPage> {
         title: category['data']['name'],
         imgSrc: category['data']['image'],
         press: () {
-          fetchRestaurants(category:category['id']);
-          searchController.text = category['data']['name'];
-          searchController.value = category['data']['name'];
+          fetchRestaurants(category:"/categories/" + category['id'].toString());
+          searchController.text = category['data']['name'].toString();
           axisCount = 1;
         },
       ));
     });
 
 
-    _changedSearch(String value){
-      categoryCards = [];
-      restaurantCards = [];
+    Future _changedSearch(String value) async{
       if(value.isNotEmpty){
+        restaurantCards = [];
         axisCount = 1;
-        fetchRestaurants();
+        print("restaurantList");
+        print(restaurantList);
+        await fetchRestaurants(restaurant: value);
+        print("restaurantList");
+        print(restaurantList);
         restaurantList.forEach((data){
           var category = data();
+          print(category);
           restaurantCards.add(CategoryCard(
             title: category['name'],
             imgSrc: category["logo"],
@@ -114,23 +115,22 @@ class _SearchPage extends State<SearchPage> {
             },
           ));
         });
-      }else{
-        axisCount = 2;
-        fetchCategories();
-        categoryList.forEach((category){
-          categoryCards.add(CategoryCard(
-            title: category['data']['name'],
-            imgSrc: category['data']['image'],
-            press: () {
-              axisCount = 1;
-              fetchRestaurants(category:category['id']);
-              searchController.text = category['data']['name'];
-              searchController.value = category['data']['name'];
-            },
-          ));
-        });
+        return;
       }
-      print(axisCount);
+      axisCount = 2;
+      categoryCards = [];
+      await fetchCategories();
+      categoryList.forEach((category){
+        categoryCards.add(CategoryCard(
+          title: category['data']['name'],
+          imgSrc: category['data']['image'],
+          press: () {
+            axisCount = 1;
+            fetchRestaurants(category:"/categories/" + category['id'].toString());
+            searchController.text = category['data']['name'].toString();
+          },
+        ));
+      });
     }
 
     return Scaffold(
@@ -177,18 +177,17 @@ class _SearchPage extends State<SearchPage> {
                               child: Image.network("https://img.icons8.com/material-outlined/24/000000/menu--v4.png")
 
                           ),
-
                         ),
-
                       ),
+
                       Text(
-                        "Merve'nin Malikanesi"
+                        "ev"
                         ,
                         style: Theme.of(context)
                             .textTheme
                             .headline6
                             ?.copyWith(fontWeight: FontWeight.w900,
-                            color: Colors.pink
+                            color: Colors.black54,
                         ),
                       ),
                       Align(
@@ -208,16 +207,13 @@ class _SearchPage extends State<SearchPage> {
                               child: Image.network("https://cdn.icon-icons.com/icons2/2943/PNG/512/logout_icon_184025.png")
 
                           ),
-
                         ),
-
                       ),
                     ],
                   ),
 
                   Text(
-                    (axisCount == 2) ? "KATEGORİLER" : "RESTORANLAR"
-                    ,
+                    (axisCount == 2) ? "KATEGORİLER" : "RESTORANLAR",
                     style: Theme.of(context)
                         .textTheme
                         .headline4
@@ -242,16 +238,32 @@ class _SearchPage extends State<SearchPage> {
                         border: InputBorder.none,
                       ),
                       onChanged: (String value) async {
+                        print(value);
                         _changedSearch(value);
                       },
                     ),
-                  ), Expanded(child: GridView.count(
+                  ), Expanded(child:
+
+                  axisCount == 2 && categoryCards.isNotEmpty ?
+
+                  GridView.count(
                     crossAxisCount: axisCount,
                     childAspectRatio: .85,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
-                    children:  (axisCount == 2) ? <Widget> [...categoryCards] : <Widget> [...restaurantCards],
-                  ),
+                    children:  <Widget> [...categoryCards],
+                  )
+
+                    : axisCount == 1 && restaurantCards.isNotEmpty ?
+
+                  GridView.count(
+                    crossAxisCount: axisCount,
+                    childAspectRatio: .85,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    children:   <Widget> [...restaurantCards],
+                  ) :
+                  const Text("Not Found"),
                   ),
                 ],
               ),

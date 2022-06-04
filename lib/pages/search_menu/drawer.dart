@@ -1,4 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:point/pages/search_menu/address_page.dart';
+import 'package:point/pages/search_menu/favorite_restaurants.dart';
+import 'package:point/pages/search_menu/restaurants_before.dart';
+
+import 'help_page.dart';
 
 
 class NavBar extends StatefulWidget {
@@ -9,6 +15,10 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late User? user = _auth.currentUser;
+  late String? email = _auth.currentUser?.email;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -17,11 +27,11 @@ class _NavBarState extends State<NavBar> {
         children: [
           UserAccountsDrawerHeader(
             accountName: const Text('PROFİLİM'),
-            accountEmail: const Text('example@gmailcom'),
+            accountEmail: Text(email.toString()),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
-                  'https://www.istockphoto.com/tr/vekt%C3%B6r/woman-front-face-cartoon-avatar-icon-gm613880840-106063081',
+                  'https://img.icons8.com/office/344/user-female-skin-type-5.png',
                   width: 90,
                   height: 90,
                   fit: BoxFit.cover,
@@ -39,39 +49,39 @@ class _NavBarState extends State<NavBar> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.favorite),
-            title: Text('Favori mekanlarım'),
-            onTap: () => null,
-          ),
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: const Text('Gitmek İstediğim Mekanlar'),
-            onTap: () => null,
-          ),
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text('Önceden Gittiklerim'),
-            onTap: () => null,
-          ),
-          ListTile(
-            leading: Icon(Icons.navigation),
+            leading: const Icon(Icons.home),
             title: Text('Adreslerim'),
-            onTap: () => null,
+            onTap: () => {
+              Navigator.pop(context),
+              Navigator.push(context, MaterialPageRoute(builder: (c)=> const AddressPage())),
+              },
+          ),
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: const Text('Favori Restoranlar'),
+            onTap: () => {
+              Navigator.pop(context),
+              Navigator.push(context, MaterialPageRoute(builder: (c)=> const FavoriteRestaurants())),
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.restaurant),
+            title: Text('Önceden Gittiklerim'),
+            onTap: () => {
+              Navigator.pop(context),
+              Navigator.push(context, MaterialPageRoute(builder: (c)=> const RestaurantsBefore())),
+            },
           ),
           ListTile(
             leading: Icon(Icons.help),
             title: Text('Yardım'),
-            onTap: () => null,
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Çıkış'),
-            onTap: () => null,
+            onTap: () => {
+              Navigator.pop(context),
+              Navigator.push(context, MaterialPageRoute(builder: (c)=> const HelpPage())),
+            },
           ),
         ],
       ),
     );
   }
 }
-
-
