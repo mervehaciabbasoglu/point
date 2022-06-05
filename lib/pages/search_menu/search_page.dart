@@ -17,8 +17,6 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPage extends State<SearchPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  List categoryList = [];
-  List restaurantList = [];
 
   List<Widget> restaurantCards = [];
   List<Widget> categoryCards = [];
@@ -35,25 +33,42 @@ class _SearchPage extends State<SearchPage> {
 
   fetchCategories() async {
 
-    dynamic data = await Database().fetchCategories(); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
+    dynamic categoryList = await Database().fetchCategories(); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
 
-    if (data == null) {
+    if (categoryList == null) {
       print('Unable to retrieve');
     } else {
-      setState(() { // setState: gelen dataları widgetların kullanımına sunar
-        categoryList = data;
+      setState(() {
+
+        categoryList.forEach((category){
+          categoryCards.add(CategoryCard(
+            title: category['data']['name'],
+            imgSrc: category['data']['image'],
+            press: () {
+              fetchRestaurants(category:category['id'].toString());
+            },
+          ));
+        });
       });
     }
   }
 
   fetchRestaurants({String? category, String? restaurant}) async {
-    dynamic data = await Database().fetchRestaurants(category:category, restaurant:restaurant); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
-
-    if (data == null) {
+    dynamic restaurantList = await Database().fetchRestaurants(category:category, restaurant:restaurant); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
+    restaurantCards = [];
+    if (restaurantList == null) {
       print('Unable to retrieve');
     } else {
-      setState(() { // setState: gelen dataları widgetların kullanımına sunar
-        restaurantList = data;
+      setState(() {
+        restaurantList.forEach((data){
+          restaurantCards.add(CategoryCard(
+            title: data['name'],
+            imgSrc: data["logo"],
+            press: () {
+            },
+          ));
+        });
+        axisCount = 1;
       });
     }
   }
@@ -80,57 +95,19 @@ class _SearchPage extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final _name = Scaffold();
-    var size = MediaQuery.of(context)
-        .size; //this gonna give us total height and with of our device
-
-    categoryList.forEach((category){
-      categoryCards.add(CategoryCard(
-        title: category['data']['name'],
-        imgSrc: category['data']['image'],
-        press: () {
-          fetchRestaurants(category:"/categories/" + category['id'].toString());
-          searchController.text = category['data']['name'].toString();
-          axisCount = 1;
-        },
-      ));
-    });
-
+    var size = MediaQuery.of(context).size; //this gonna give us total height and with of our device
 
     Future _changedSearch(String value) async{
+      print(value);
       if(value.isNotEmpty){
         restaurantCards = [];
         axisCount = 1;
-        print("restaurantList");
-        print(restaurantList);
         await fetchRestaurants(restaurant: value);
-        print("restaurantList");
-        print(restaurantList);
-        restaurantList.forEach((data){
-          var category = data();
-          print(category);
-          restaurantCards.add(CategoryCard(
-            title: category['name'],
-            imgSrc: category["logo"],
-            press: () {
-            },
-          ));
-        });
         return;
       }
       axisCount = 2;
       categoryCards = [];
       await fetchCategories();
-      categoryList.forEach((category){
-        categoryCards.add(CategoryCard(
-          title: category['data']['name'],
-          imgSrc: category['data']['image'],
-          press: () {
-            axisCount = 1;
-            fetchRestaurants(category:"/categories/" + category['id'].toString());
-            searchController.text = category['data']['name'].toString();
-          },
-        ));
-      });
     }
 
     return Scaffold(

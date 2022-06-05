@@ -28,13 +28,17 @@ class Database {
     print(restaurant);
 
     Future<Object> searchByRestaurantName(String? searchField) async {
+      searchField = searchField.toString().toLowerCase();
       List itemsList = [];
       try {
         await _firestore.collection('restaurants')
-            .where('name', isEqualTo: searchField)
+            .where('name', isGreaterThanOrEqualTo: searchField, isLessThan: searchField.toString().substring(0, searchField!.length-1) + String.fromCharCode(searchField!.codeUnitAt(searchField.length - 1) + 1))
             .get().then((querySnapshot) {
+
+          print(querySnapshot.docs.length);
+          print("querySnapshot");
           for (var element in querySnapshot.docs) {
-            itemsList.add(element.data);
+            itemsList.add(element.data());
           }
         });
         return itemsList;
@@ -43,19 +47,17 @@ class Database {
         return [];
       }
     }
-    Future<Object> searchByCategoryReference(String? searchField) async {
+    Future<Object> searchByCategoryReference(String searchField) async {
+      searchField = searchField.toString().toLowerCase();
       List itemsList = [];
       try {
-        print("**************");
-        print(searchField);
-        await _firestore.collection('restaurants').orderBy("category").startAt([searchField])
+        await _firestore.collection('restaurants').where("category", isEqualTo: searchField)
             .get().then((querySnapshot) {
+          print(querySnapshot.docs.length);
           for (var element in querySnapshot.docs) {
             itemsList.add(element.data());
           }
         });
-        print("*000000000000000000000000000000000000000000000000000");
-        print(itemsList.length);
         return itemsList;
       } catch (e) {
         print(e.toString());
