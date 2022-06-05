@@ -52,8 +52,8 @@ class _NavBarState extends State<NavBar> {
             leading: const Icon(Icons.home),
             title: Text('Adreslerim'),
             onTap: () => {
-              Navigator.pop(context),
-              Navigator.push(context, MaterialPageRoute(builder: (c)=> const AddressPage())),
+              // Navigator.pop(context),
+              // Navigator.push(context, MaterialPageRoute(builder: (c)=> const AddressPage())),
               },
           ),
           ListTile(
