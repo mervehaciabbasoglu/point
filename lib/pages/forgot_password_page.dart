@@ -15,9 +15,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
 
-  get EmailValidator => null;
+  get EmailValidator => [];
 
-  get Utils => null;
+  get Utils => [];
   //TextEditingController _emailTextController = TextEditingController();
 
   @override
@@ -29,39 +29,42 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     appBar: AppBar(
       backgroundColor: Colors.blue,
       elevation: 0,
-      title: Text('Şifreyi Yenile'),
+      title: const Text('Şifreyi Yenile'),
     ),
     body: Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Form(
         key: formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Şifrenizi sıfırlamak için bir e-posta alın',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 24),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
               controller: emailController,
               cursorColor: Colors.white,
               textInputAction: TextInputAction.done,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (email) =>
-              email != null && !EmailValidator.validate(email)
-                  ? 'Geçerli bir eposta adresi giriniz'
-                  : null,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Ben Yokum!';
+                } else if (value.length < 2) {
+                  return 'Ben Varım ama az varım';
+                }
+              }
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
+                minimumSize: const Size.fromHeight(50),
               ),
-              icon: Icon(Icons.email_outlined),
-              label: Text(
+              icon: const Icon(Icons.email_outlined),
+              label: const Text(
                 'Şifreyi yenile',
                 style: TextStyle(fontSize: 24),
               ),

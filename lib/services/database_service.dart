@@ -24,15 +24,13 @@ class Database {
 
 
   Future fetchRestaurants({String? category, String? restaurant}) async {
-    print(category);
-    print(restaurant);
 
     Future<Object> searchByRestaurantName(String? searchField) async {
       searchField = searchField.toString().toLowerCase();
       List itemsList = [];
       try {
         await _firestore.collection('restaurants')
-            .where('name', isGreaterThanOrEqualTo: searchField, isLessThan: searchField.toString().substring(0, searchField!.length-1) + String.fromCharCode(searchField!.codeUnitAt(searchField.length - 1) + 1))
+            .where('name', isGreaterThanOrEqualTo: searchField, isLessThan: searchField.toString().substring(0, searchField.length-1) + String.fromCharCode(searchField.codeUnitAt(searchField.length - 1) + 1))
             .get().then((querySnapshot) {
 
           print(querySnapshot.docs.length);
@@ -48,7 +46,6 @@ class Database {
       }
     }
     Future<Object> searchByCategoryReference(String searchField) async {
-      searchField = searchField.toString().toLowerCase();
       List itemsList = [];
       try {
         await _firestore.collection('restaurants').where("category", isEqualTo: searchField)
