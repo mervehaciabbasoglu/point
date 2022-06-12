@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:point/pages/search_menu/address_page.dart';
+import 'package:point/pages/search_menu/address_form.dart';
 import 'package:point/pages/search_menu/favorite_restaurants.dart';
 import 'package:point/pages/search_menu/restaurants_before.dart';
 
@@ -53,7 +53,7 @@ class _NavBarState extends State<NavBar> {
             title: Text('Adreslerim'),
             onTap: () => {
                Navigator.pop(context),
-               Navigator.push(context, MaterialPageRoute(builder: (c)=> const AddressPage())),
+               Navigator.push(context, MaterialPageRoute(builder: (c)=> const AddressForm())),
               },
           ),
           ListTile(

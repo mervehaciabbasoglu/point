@@ -22,6 +22,8 @@ class _SearchPage extends State<SearchPage> {
   List<Widget> categoryCards = [];
   TextEditingController searchController = TextEditingController();
   int axisCount = 2;
+  String filterTown = "Kadıköy";
+
 
 
   @override
@@ -62,7 +64,7 @@ class _SearchPage extends State<SearchPage> {
       setState(() {
         restaurantList.forEach((data){
           restaurantCards.add(CategoryCard(
-            title: data['name'],
+            title: data['name'] + " (" + data['county'] + ")",
             imgSrc: data["logo"],
             press: () {
             },
@@ -90,6 +92,42 @@ class _SearchPage extends State<SearchPage> {
   }
 
 
+  void submit() async{
+    Navigator.of(context).pop();
+  }
+
+  Future openDialog() => showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Filtreler'),
+      content: DropdownButton<String>(
+        isExpanded: true,
+        value: filterTown,
+        hint: const Text("Select Town"),
+        icon: const Icon(Icons.arrow_drop_down),
+        elevation: 16,
+        isDense: true,
+        onChanged: (String? newValue) {
+          setState(() {
+            filterTown = newValue!;
+          });
+        },
+        items: <String>['Kadıköy', 'Üsküdar', 'Beşiktaş', 'Beykoz']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ),
+      actions: [
+        TextButton(
+          child: const Text('Uygula'),
+          onPressed: submit,
+        )
+      ], // TextButton
+    ),
+  );
 
 
   @override
@@ -98,7 +136,6 @@ class _SearchPage extends State<SearchPage> {
     var size = MediaQuery.of(context).size; //this gonna give us total height and with of our device
 
     Future _changedSearch(String value) async{
-      print(value);
       if(value.isNotEmpty){
         restaurantCards = [];
         axisCount = 1;
@@ -203,21 +240,34 @@ class _SearchPage extends State<SearchPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(29.5),
                     ),
-                    child: TextField(
-                      controller: searchController,
-                      decoration: const InputDecoration(
-                        hintText: "Search",
-                        icon: Icon(
-                          FontAwesomeIcons.search,
-                          color: Colors.black,
-                          size: 25.0,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (String value) async {
-                        print(value);
-                        _changedSearch(value);
-                      },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                      Expanded(
+                          child:TextField(
+                          controller: searchController,
+                          decoration: const InputDecoration(
+                            hintText: "Search",
+                            icon: Icon(
+                              FontAwesomeIcons.search,
+                              color: Colors.black,
+                              size: 25.0,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (String value) async {
+                            print(value);
+                            _changedSearch(value);
+                          },
+                        )),
+                        ElevatedButton(
+                            onPressed: () {
+                              openDialog();
+                            },
+                            child: const Text(
+                              "Filtrele",
+                            ))
+                      ],
                     ),
                   ), Expanded(child:
 

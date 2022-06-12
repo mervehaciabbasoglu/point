@@ -2,16 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../services/database_service.dart';
 
-class AddressPage extends StatefulWidget {
-  const AddressPage({Key? key}) : super(key: key);
+class AddressForm extends StatefulWidget {
+  const AddressForm({Key? key}) : super(key: key);
 
   @override
-  State<AddressPage> createState() => _AddressPageState();
+  State<AddressForm> createState() => _AddressFormState();
 }
 
-class _AddressPageState extends State<AddressPage> {
+class _AddressFormState extends State<AddressForm> {
   List addressList = [];
   List<Widget> addressCards = [];
+  late TextEditingController new_address_controller;
+  String address = "";
+  String town = "Kadıköy";
 
   fetchAddresses() async {
     dynamic data = await Database()
@@ -31,7 +34,14 @@ class _AddressPageState extends State<AddressPage> {
   void initState() {
     // ilk yapılması gereken şeyler buraya yazılır.
     super.initState();
+    new_address_controller=TextEditingController();
     fetchAddresses();
+  }
+
+  @override
+  void dispose(){
+    new_address_controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,9 +71,73 @@ class _AddressPageState extends State<AddressPage> {
                 },
               ),
             ),
+            ElevatedButton(
+                onPressed: () async {
+                  final address = await openDialog();
+                  if(address == null || address.isEmpty) return;
+
+                  setState(()=>{
+                    this.address = address
+                  });
+
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.purpleAccent,
+                ),
+                child: const Text(
+                  "Yeni Adres Ekle",
+                ))
           ],
         ),
       );
+
+  void submit(){
+    Navigator.of(context).pop(new_address_controller.text);
+    new_address_controller.clear();
+  }
+
+  Future<String?> openDialog() => showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Yeni Adres'),
+          content: Column(
+            children: [
+              DropdownButton<String>(
+                isExpanded: true,
+                value: town,
+                hint: const Text("Select Town"),
+                icon: const Icon(Icons.arrow_drop_down),
+                elevation: 16,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    town = newValue!;
+                  });
+                },
+                items: <String>['Kadıköy', 'Üsküdar', 'Beşiktaş', 'Beykoz']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              TextField(
+                autofocus: true,
+                decoration: const InputDecoration(hintText: "Adresi Giriniz"),
+                controller: new_address_controller,
+                onSubmitted: (_) => submit(),
+              )
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Ekle'),
+              onPressed: submit,
+            )
+          ], // TextButton
+        ),
+      );
+
 }
 
 final TextEditingController _controller = TextEditingController();
@@ -113,118 +187,9 @@ Widget build(BuildContext context) {
                 },
               ),
             ),
-            _inputFields(),
           ],
         ),
       ),
     ),
   );
 }
-
-Padding _inputFields() {
-  ListView.builder(
-    itemBuilder: (context, index) {
-      return _inputFields(); // <-- 'return' was missing
-    },
-  );
-  padding:
-  const EdgeInsets.all(8.0);
-  child:
-  Row(
-    children: [
-      Expanded(
-        child: TextField(
-          controller: _controller,
-          decoration: InputDecoration(
-            hintText: "Adresi Gir...",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-          ),
-        ),
-      ),
-      IconButton(
-        icon: Icon(Icons.send),
-        onPressed: () {
-          FirebaseFirestore.instance.collection('addresses');
-          // .add('adres1': _controller.text, 'name');
-        },
-      ),
-    ],
-  );
-}
-
-// // birlşetirme(kelime1, kelime2, no){
-// //
-// //   return kelime1+kelime2+no.toString()
-// // }
-// //
-// // birlestirme("merve", "arif", 6)
-//
-//
-// // toString() camelCase
-// // to_string() snake_case
-// // to-string() kebab-case
-//
-// // ToString() PascalCase
-// // To String() Title Case
-//
-// // arifMerveyiSeviyor
-//
-//
-//
-//
-// //  type key/keyword = value
-// // final int tc_kimlik_no = 9854376984576
-// // string name = "isim"
-// // String  surname = "hacıabbasoğlu"
-// // int age = 21
-// // Boolean sen_kadınmısın = True
-// // Function say(){
-// //    return 1+2+3*
-// // }
-// // Object mervenin_bilgileri {
-// //     String name = "isim"
-// //     String  surname = "hacıabbasoğlu"
-// //
-// //     Object mervenin_is_deneyimleri {
-// //         String name "son işim"
-// //         int kacyıl calışsuım 2
-// //     }
-// // }
-// // array/list mervenin_kitapleri = ["küçük prens", "çalıkuşu", 22, True, Function, Object, Array, Widget]
-// //
-// // mervenin_kitapleri.add("peyami safa")
-// //
-// //     Array addresses [
-// // {
-// // address1 = "sdfg"
-// // address="dfgdfg",
-// // name="merve"
-// // },
-// // {
-// // address1 = "sdfg"
-// // address="dfgdfg",
-// // name="merve"
-// // }
-// // {
-// // address1 = "sdfg"
-// // address="dfgdfg",
-// // name="merve"
-// // },
-// // {
-// // address1 = "sdfg"
-// // address="dfgdfg",
-// // name="merve"
-// // }
-// // ]
-// //
-// // addresses.forEach((mahmut)=>{
-// //    print(mahmut.name)
-// // })
-// //
-// // array _items = [1, 2, 3, 4,11, 22, 33, 44,10, 20, 30, 40];
-// //
-// // _items.forEach((item)=>{
-// //
-// // })

@@ -12,6 +12,16 @@ class Database {
         .doc(uid)
         .set({'name': name, 'plural': plural, 'image': image});
   }
+
+
+  //future: aync çalıştırmak için kullanılır. //dataları oluşturdupğumuz yer ama tek tek
+  Future createAddressData(String town, String name, String address, String uid) async
+  {
+    cloud_firestore.CollectionReference categoryList  = _firestore.collection('addresses');
+    return await categoryList
+        .doc(uid)
+        .set({'town': town, 'name': name, 'address': address});
+  }
   // methodun içinde return varsa method dönüyor demektir. methodun döndüğü değerin tipi methodun tipidir.method tipi(int string) eğer return yoksa method bir şey dönmüyor demektir
   // bu yüzden başına void yazılır.
 
