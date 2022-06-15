@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:point/pages/login_page.dart';
 import 'package:point/pages/search_menu/drawer.dart';
+import 'package:point/pages/search_menu/restaurant_menu_page.dart';
 import 'package:point/widgets/category_card.dart';
 import 'package:point/services/database_service.dart';
 
@@ -55,6 +56,14 @@ class _SearchPage extends State<SearchPage> {
     }
   }
 
+  goRestaurant(key, name){
+    if(key == null || key.isEmpty){
+      return;
+    }
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (c)=> RestaurantMenuPage(restaurantKey: key, restaurantName: name,)));
+  }
+
   fetchRestaurants({String? category, String? restaurant}) async {
     dynamic restaurantList = await Database().fetchRestaurants(category:category, restaurant:restaurant); //dynamic: datalar sürekli değişiyorsa dynamic gerekli
     restaurantCards = [];
@@ -66,8 +75,7 @@ class _SearchPage extends State<SearchPage> {
           restaurantCards.add(CategoryCard(
             title: data['name'] + " (" + data['county'] + ")",
             imgSrc: data["logo"],
-            press: () {
-            },
+            press: ()=>{goRestaurant(data['id'], data['name'])},
           ));
         });
         axisCount = 1;
@@ -194,16 +202,16 @@ class _SearchPage extends State<SearchPage> {
                         ),
                       ),
 
-                      Text(
-                        "ev"
-                        ,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6
-                            ?.copyWith(fontWeight: FontWeight.w900,
-                            color: Colors.black54,
-                        ),
-                      ),
+                      // Text(
+                      //   "ev"
+                      //   ,
+                      //   style: Theme.of(context)
+                      //       .textTheme
+                      //       .headline6
+                      //       ?.copyWith(fontWeight: FontWeight.w900,
+                      //       color: Colors.black54,
+                      //   ),
+                      // ),
                       Align(
                         alignment: Alignment.topRight,
                         child: Container(

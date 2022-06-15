@@ -46,7 +46,7 @@ class Database {
           print(querySnapshot.docs.length);
           print("querySnapshot");
           for (var element in querySnapshot.docs) {
-            itemsList.add(element.data());
+            itemsList.add({...element.data(),"id":element.reference.id});
           }
         });
         return itemsList;
@@ -62,7 +62,7 @@ class Database {
             .get().then((querySnapshot) {
           print(querySnapshot.docs.length);
           for (var element in querySnapshot.docs) {
-            itemsList.add(element.data());
+            itemsList.add({...element.data(),"id":element.reference.id});
           }
         });
         return itemsList;
@@ -109,6 +109,25 @@ class Database {
         }
       });
 
+      return itemsList;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future fetchMenus({String? restaurant}) async {
+
+    List itemsList = [];
+    try {
+      await _firestore.collection('products').where("restaurant", isEqualTo: restaurant)
+          .get().then((querySnapshot) {
+        print(querySnapshot.docs.length);
+        for (var element in querySnapshot.docs) {
+          itemsList.add({...element.data(),"id":element.reference.id});
+        }
+      });
+      print(itemsList);
       return itemsList;
     } catch (e) {
       print(e.toString());

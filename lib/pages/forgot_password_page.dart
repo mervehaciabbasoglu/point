@@ -18,9 +18,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   get EmailValidator => [];
 
   get Utils => [];
-  //TextEditingController _emailTextController = TextEditingController();
+  TextEditingController _emailTextController = TextEditingController();
 
   @override
+
+
   void dispose() {
     emailController.dispose();
     super.dispose();
@@ -50,13 +52,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               textInputAction: TextInputAction.done,
               decoration: const InputDecoration(labelText: 'Email'),
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Ben Yokum!';
-                } else if (value.length < 2) {
-                  return 'Ben Varım ama az varım';
-                }
-              }
+               validator: (email) =>
+                   email != null && !EmailValidator.validate(email)
+                   ? 'Geçerli bir E-posta giriniz'
+                   : null,
+              //{
+              //  if (email!.isEmpty) {
+              //      return 'Ben Yokum!';
+              //   } else if (email.length < 2) {
+              //      return 'Ben Varım ama az varım';
+              //    }
+              // }
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
@@ -97,7 +103,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       Navigator.of(context).pop();
     }
   }
+
+
 }
+
+firbaseButton(BuildContext context, String s, Null Function() param2) {
+}
+
+
+
+reusableTextField(String s, IconData person_outline, bool bool, TextEditingController emailTextController) {
+}
+
+
 
 
 
